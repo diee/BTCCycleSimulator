@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { runLogicTests } from '../logic';
 
@@ -23,12 +22,12 @@ const DiagnosticsScreen: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
       <div className="space-y-4">
         <div className="flex items-center gap-2">
-          <span className="text-blue-500">>></span>
-          <span>Iniciando batería de pruebas unitarias...</span>
+          <span className="text-blue-500">{" >> "}</span>
+          <span>Starting unit test battery...</span>
         </div>
 
         {isRunning ? (
-          <div className="animate-pulse text-slate-500">Ejecutando...</div>
+          <div className="animate-pulse text-slate-500">Running...</div>
         ) : (
           testResults.map((test, i) => (
             <div key={i} className={`p-3 rounded border ${test.passed ? 'border-emerald-900 bg-emerald-950/30' : 'border-red-900 bg-red-950/30'}`}>
@@ -44,12 +43,12 @@ const DiagnosticsScreen: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
         {!isRunning && (
           <div className="mt-8 pt-4 border-t border-slate-800">
-            <p className="text-emerald-500 mb-4">Todas las pruebas críticas de integridad han finalizado.</p>
+            <p className="text-emerald-500 mb-4">All critical integrity tests have finished.</p>
             <button 
               onClick={onClose}
               className="w-full py-3 bg-emerald-600 text-white rounded font-bold"
             >
-              VOLVER A LA APP
+              BACK TO APP
             </button>
           </div>
         )}

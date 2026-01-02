@@ -3,19 +3,25 @@
 
 Simulador educativo para explorar escenarios financieros basados en la acumulación de Bitcoin a largo plazo.
 
-## 🚀 Cómo publicarlo en GitHub (Gratis)
+## 🚀 Despliegue en Vercel (Recomendado)
 
-Esta aplicación está diseñada para funcionar sin necesidad de herramientas de compilación complejas (usa ESM). Para verla online:
+Vercel es la forma más rápida y gratuita de publicar esta app:
 
-1. **Crea un repositorio** en GitHub (ej. `btc-simulator`).
-2. **Sube todos los archivos** de este proyecto (incluyendo `index.html`, `index.tsx`, etc.).
-3. Ve a **Settings** (Configuración) de tu repositorio.
-4. En el menú lateral, selecciona **Pages**.
-5. En "Build and deployment", asegúrate de que esté seleccionado "Deploy from a branch".
-6. Elige la rama `main` (o `master`) y la carpeta `/ (root)`.
-7. Haz clic en **Save**.
+1.  **Sube tu código** a un repositorio de GitHub.
+2.  Ve a [vercel.com](https://vercel.com/) e inicia sesión con GitHub.
+3.  Haz clic en **"Add New"** > **"Project"**.
+4.  Selecciona tu repositorio `btc-simulator`.
+5.  Haz clic en **"Deploy"**.
 
-En un par de minutos, GitHub te dará una URL (ej: `https://tu-usuario.github.io/btc-simulator/`) donde podrás usar la app desde cualquier navegador o móvil.
+Vercel detectará automáticamente que es un proyecto de Vite y lo publicará en segundos. Cada vez que hagas un `git push` a tu repositorio, la página se actualizará sola.
+
+## 🛠️ Desarrollo Local
+
+Si quieres probarlo en tu computadora:
+
+1.  Instala las dependencias: `npm install`
+2.  Inicia el servidor de desarrollo: `npm run dev`
+3.  Para compilar para producción: `npm run build`
 
 ## ⚠️ Disclaimer
-Esta aplicación es únicamente para fines educativos y recreativos. No constituye asesoramiento financiero, legal o de inversión.
+Esta aplicación es únicamente para fines educativos y recreativos. No constituye asesoramiento financiero, legal o de inversión. Los precios utilizados son ficticios y sirven para ilustrar conceptos de ciclos de mercado.

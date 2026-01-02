@@ -1,8 +1,7 @@
-
 export enum Lifestyle {
-  FRUGAL = 'Frugal',
-  NORMAL = 'Normal',
-  CARO = 'Caro'
+  FRUGAL = 'Minimalist',
+  NORMAL = 'Balanced',
+  CARO = 'Premium'
 }
 
 export interface SimulationConfig {
@@ -23,6 +22,7 @@ export interface CycleSnapshot {
 export interface SimulationState {
   currentCycle: number;
   btcAmount: number;
+  totalBtcSold: number;
   totalSpentUsd: number;
   history: CycleSnapshot[];
   isFinished: boolean;

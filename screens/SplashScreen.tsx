@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { BITCOIN_ORANGE } from '../constants';
 
@@ -17,7 +16,7 @@ const SplashScreen: React.FC<{ onFinish: () => void }> = ({ onFinish }) => {
         <span className="text-white text-5xl font-bold">₿</span>
       </div>
       <h1 className="text-3xl font-bold mb-2 tracking-tight">BTC Cycles</h1>
-      <p className="text-slate-400 text-sm">Simulador de Libertad Financiera</p>
+      <p className="text-slate-400 text-sm">Financial Freedom Simulator</p>
       
       <div className="absolute bottom-12 w-12 h-1 bg-slate-800 rounded-full overflow-hidden">
         <div className="h-full bg-orange-500 animate-[loading_2s_ease-in-out_infinite]" style={{width: '60%'}}></div>

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { SimulationConfig, SimulationState, Lifestyle, CycleSnapshot } from './types';
 import { MONTHLY_EXPENSES } from './constants';
@@ -24,6 +23,7 @@ const App: React.FC = () => {
     setState({
       currentCycle: 1,
       btcAmount: newConfig.initialBtc,
+      totalBtcSold: 0,
       totalSpentUsd: 0,
       history: [],
       isFinished: false,
@@ -36,7 +36,7 @@ const App: React.FC = () => {
   const handleCycleAction = (action: 'HOLD' | 'SELL_EXPENSES' | 'SELL_5') => {
     if (!state || !config) return;
 
-    const { newBtc, newSpent, cyclePrice } = calculateCycleAction(state, action);
+    const { newBtc, newSpent, cyclePrice, btcSoldThisTurn } = calculateCycleAction(state, action);
 
     const snapshot: CycleSnapshot = {
       cycle: state.currentCycle,
@@ -53,6 +53,7 @@ const App: React.FC = () => {
       ...prev,
       currentCycle: nextCycle,
       btcAmount: newBtc,
+      totalBtcSold: prev.totalBtcSold + btcSoldThisTurn,
       totalSpentUsd: newSpent,
       history: [...prev.history, snapshot],
       isFinished,
@@ -96,7 +97,7 @@ const App: React.FC = () => {
       />
 
       <footer className="p-4 text-[10px] text-slate-500 text-center bg-slate-900/80 backdrop-blur-sm">
-        Simulación educativa. No es asesoramiento financiero. Valores de mercado ficticios.
+        Educational simulation. Not financial advice. Fictional market values.
       </footer>
     </div>
   );

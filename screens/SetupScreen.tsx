@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Lifestyle, SimulationConfig } from '../types';
 import { INITIAL_BTC_PRESETS, BITCOIN_ORANGE, BTC_CYCLE_PRICES } from '../constants';
@@ -32,13 +31,13 @@ const SetupScreen: React.FC<SetupScreenProps> = ({ onStart }) => {
     <div className="flex-1 flex flex-col p-6 overflow-y-auto">
       <header className="mb-8 flex justify-between items-start">
         <div>
-          <h2 className="text-2xl font-bold mb-1">Configuración</h2>
-          <p className="text-slate-400 text-sm">Define tu escenario de partida</p>
+          <h2 className="text-2xl font-bold mb-1">Configuration</h2>
+          <p className="text-slate-400 text-sm">Define your starting scenario</p>
         </div>
         <button 
           onClick={() => setShowAdvanced(!showAdvanced)}
           className={`p-2 rounded-lg transition-colors ${showAdvanced ? 'bg-orange-500 text-white' : 'bg-slate-800 text-slate-400'}`}
-          title="Ajustes Avanzados"
+          title="Advanced Settings"
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path fillRule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd" />
@@ -49,11 +48,11 @@ const SetupScreen: React.FC<SetupScreenProps> = ({ onStart }) => {
       <div className="space-y-8 flex-1">
         {showAdvanced && (
           <section className="bg-slate-800/40 border border-slate-700 rounded-2xl p-4 animate-in fade-in slide-in-from-top-4 duration-300">
-            <h3 className="text-xs font-bold text-orange-400 uppercase mb-4">Estimación de Precios (USD)</h3>
+            <h3 className="text-xs font-bold text-orange-400 uppercase mb-4">Price Estimation (USD)</h3>
             <div className="space-y-4">
               {[1, 2, 3].map(c => (
                 <div key={c} className="flex items-center gap-3">
-                  <span className="text-xs text-slate-500 font-mono w-16">Ciclo {c}</span>
+                  <span className="text-xs text-slate-500 font-mono w-16">Cycle {c}</span>
                   <div className="flex-1 relative">
                     <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-xs">$</span>
                     <input 
@@ -66,13 +65,13 @@ const SetupScreen: React.FC<SetupScreenProps> = ({ onStart }) => {
                 </div>
               ))}
             </div>
-            <p className="mt-3 text-[10px] text-slate-500 italic">Precios estimados al final de cada ciclo de 4 años.</p>
+            <p className="mt-3 text-[10px] text-slate-500 italic">Estimated prices at the end of each 4-year cycle.</p>
           </section>
         )}
 
         {/* BTC Section */}
         <section>
-          <label className="block text-sm font-medium text-slate-300 mb-4">BTC Inicial</label>
+          <label className="block text-sm font-medium text-slate-300 mb-4">Initial BTC</label>
           <div className="grid grid-cols-3 gap-2 mb-4">
             {INITIAL_BTC_PRESETS.slice(0, 3).map(preset => (
               <button
@@ -106,7 +105,7 @@ const SetupScreen: React.FC<SetupScreenProps> = ({ onStart }) => {
 
         {/* Lifestyle Section */}
         <section>
-          <label className="block text-sm font-medium text-slate-300 mb-4">Estilo de Vida (Gasto Mensual)</label>
+          <label className="block text-sm font-medium text-slate-300 mb-4">Lifestyle (Monthly Spending)</label>
           <div className="grid grid-cols-3 gap-2">
             {[Lifestyle.FRUGAL, Lifestyle.NORMAL, Lifestyle.CARO].map(style => (
               <button
@@ -123,15 +122,15 @@ const SetupScreen: React.FC<SetupScreenProps> = ({ onStart }) => {
             ))}
           </div>
           <p className="mt-2 text-[11px] text-slate-500 px-1">
-            {lifestyle === Lifestyle.FRUGAL && "Minimalista: 600 USD/mes"}
-            {lifestyle === Lifestyle.NORMAL && "Equilibrado: 1,200 USD/mes"}
-            {lifestyle === Lifestyle.CARO && "Premium: 2,500 USD/mes"}
+            {lifestyle === Lifestyle.FRUGAL && "Minimalist: 600 USD/month"}
+            {lifestyle === Lifestyle.NORMAL && "Balanced: 1,200 USD/month"}
+            {lifestyle === Lifestyle.CARO && "Premium: 2,500 USD/month"}
           </p>
         </section>
 
         {/* Horizon Section */}
         <section>
-          <label className="block text-sm font-medium text-slate-300 mb-4">Horizonte Temporal</label>
+          <label className="block text-sm font-medium text-slate-300 mb-4">Time Horizon</label>
           <div className="flex gap-2">
             {[1, 2, 3].map(h => (
               <button
@@ -143,8 +142,8 @@ const SetupScreen: React.FC<SetupScreenProps> = ({ onStart }) => {
                     : 'border-slate-800 bg-slate-800/50 text-slate-400'
                 }`}
               >
-                {h} Ciclo{h > 1 ? 's' : ''}
-                <span className="block text-[10px] opacity-70">({h * 4} años)</span>
+                {h} Cycle{h > 1 ? 's' : ''}
+                <span className="block text-[10px] opacity-70">({h * 4} years)</span>
               </button>
             ))}
           </div>
@@ -156,7 +155,7 @@ const SetupScreen: React.FC<SetupScreenProps> = ({ onStart }) => {
         className="mt-8 w-full py-4 rounded-2xl font-bold text-lg shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-transform"
         style={{ backgroundColor: BITCOIN_ORANGE, color: '#fff' }}
       >
-        Empezar Simulación
+        Start Simulation
       </button>
     </div>
   );
