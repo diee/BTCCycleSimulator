@@ -25,6 +25,7 @@ const App: React.FC = () => {
       btcAmount: newConfig.initialBtc,
       totalBtcSold: 0,
       totalSpentUsd: 0,
+      totalDcaInvested: 0,
       history: [],
       isFinished: false,
       monthlyExpense,
@@ -36,7 +37,7 @@ const App: React.FC = () => {
   const handleCycleAction = (action: 'HOLD' | 'SELL_EXPENSES' | 'SELL_5') => {
     if (!state || !config) return;
 
-    const { newBtc, newSpent, cyclePrice, btcSoldThisTurn } = calculateCycleAction(state, action);
+    const { newBtc, newSpent, cyclePrice, btcSoldThisTurn, dcaBtcBought, currentCycleExpense } = calculateCycleAction(state, config, action);
 
     const snapshot: CycleSnapshot = {
       cycle: state.currentCycle,
@@ -44,6 +45,7 @@ const App: React.FC = () => {
       btcRemaining: newBtc,
       usdValue: newBtc * cyclePrice,
       accumulatedSpending: newSpent,
+      currentMonthlyExpense: currentCycleExpense / 12 / 4
     };
 
     const nextCycle = state.currentCycle + 1;
@@ -55,8 +57,11 @@ const App: React.FC = () => {
       btcAmount: newBtc,
       totalBtcSold: prev.totalBtcSold + btcSoldThisTurn,
       totalSpentUsd: newSpent,
+      totalDcaInvested: prev.totalDcaInvested + (config.dcaAmount * 48),
       history: [...prev.history, snapshot],
       isFinished,
+      // Update monthly expense for next cycle based on inflation (4 years)
+      monthlyExpense: prev.monthlyExpense * Math.pow(1 + config.inflationRate / 100, 4)
     }) : null);
 
     if (isFinished) {

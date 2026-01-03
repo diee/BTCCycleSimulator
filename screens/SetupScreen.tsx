@@ -12,13 +12,19 @@ const SetupScreen: React.FC<SetupScreenProps> = ({ onStart }) => {
   const [horizon, setHorizon] = useState(2);
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [prices, setPrices] = useState<Record<number, number>>({ ...BTC_CYCLE_PRICES });
+  
+  // New features
+  const [dcaAmount, setDcaAmount] = useState(200);
+  const [inflationRate, setInflationRate] = useState(3);
 
   const handleStart = () => {
     onStart({ 
       initialBtc, 
       lifestyle, 
       horizon,
-      customPrices: prices 
+      customPrices: prices,
+      dcaAmount,
+      inflationRate
     });
   };
 
@@ -28,15 +34,15 @@ const SetupScreen: React.FC<SetupScreenProps> = ({ onStart }) => {
   };
 
   return (
-    <div className="flex-1 flex flex-col p-6 overflow-y-auto">
+    <div className="flex-1 flex flex-col p-6 overflow-y-auto pb-24">
       <header className="mb-8 flex justify-between items-start">
         <div>
-          <h2 className="text-2xl font-bold mb-1">Configuration</h2>
-          <p className="text-slate-400 text-sm">Define your starting scenario</p>
+          <h2 className="text-2xl font-bold mb-1 tracking-tight">Setup Scenario</h2>
+          <p className="text-slate-400 text-sm">Fine-tune your future path</p>
         </div>
         <button 
           onClick={() => setShowAdvanced(!showAdvanced)}
-          className={`p-2 rounded-lg transition-colors ${showAdvanced ? 'bg-orange-500 text-white' : 'bg-slate-800 text-slate-400'}`}
+          className={`p-2 rounded-xl transition-all ${showAdvanced ? 'bg-orange-500 text-white rotate-12 scale-110 shadow-lg shadow-orange-500/20' : 'bg-slate-800 text-slate-400'}`}
           title="Advanced Settings"
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -47,40 +53,75 @@ const SetupScreen: React.FC<SetupScreenProps> = ({ onStart }) => {
 
       <div className="space-y-8 flex-1">
         {showAdvanced && (
-          <section className="bg-slate-800/40 border border-slate-700 rounded-2xl p-4 animate-in fade-in slide-in-from-top-4 duration-300">
-            <h3 className="text-xs font-bold text-orange-400 uppercase mb-4">Price Estimation (USD)</h3>
-            <div className="space-y-4">
-              {[1, 2, 3].map(c => (
-                <div key={c} className="flex items-center gap-3">
-                  <span className="text-xs text-slate-500 font-mono w-16">Cycle {c}</span>
-                  <div className="flex-1 relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-xs">$</span>
-                    <input 
-                      type="text" 
-                      value={prices[c].toLocaleString()}
-                      onChange={(e) => updatePrice(c, e.target.value)}
-                      className="w-full bg-slate-900 border border-slate-700 rounded-lg py-2 pl-6 pr-3 text-sm font-mono focus:border-orange-500 outline-none"
-                    />
+          <section className="bg-slate-800/40 border border-slate-700 rounded-3xl p-5 space-y-6 animate-in fade-in zoom-in-95 duration-300">
+            <div>
+              <h3 className="text-xs font-black text-orange-400 uppercase mb-4 tracking-widest">Market & Economic Config</h3>
+              <div className="space-y-4">
+                {[1, 2, 3].map(c => (
+                  <div key={c} className="flex items-center gap-3">
+                    <span className="text-[10px] text-slate-500 font-mono w-14">C{c} Price</span>
+                    <div className="flex-1 relative">
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-xs">$</span>
+                      <input 
+                        type="text" 
+                        value={prices[c].toLocaleString()}
+                        onChange={(e) => updatePrice(c, e.target.value)}
+                        className="w-full bg-slate-900 border border-slate-700 rounded-xl py-2 pl-6 pr-3 text-sm font-mono focus:border-orange-500 outline-none transition-colors"
+                      />
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-            <p className="mt-3 text-[10px] text-slate-500 italic">Estimated prices at the end of each 4-year cycle.</p>
+
+            <div className="pt-4 border-t border-slate-700/50">
+              <div className="flex justify-between items-center mb-2">
+                <label className="text-xs font-bold text-blue-400 uppercase tracking-widest">Monthly DCA Saving</label>
+                <span className="text-sm font-mono text-white">${dcaAmount}</span>
+              </div>
+              <input 
+                type="range" 
+                min="0" 
+                max="5000" 
+                step="50" 
+                value={dcaAmount}
+                onChange={(e) => setDcaAmount(parseInt(e.target.value))}
+                className="w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-500"
+              />
+              <p className="text-[10px] text-slate-500 mt-2 italic">How much fiat you save into BTC monthly.</p>
+            </div>
+
+            <div className="pt-4 border-t border-slate-700/50">
+              <div className="flex justify-between items-center mb-2">
+                <label className="text-xs font-bold text-red-400 uppercase tracking-widest">Fiat Inflation</label>
+                <span className="text-sm font-mono text-white">{inflationRate}% / yr</span>
+              </div>
+              <input 
+                type="range" 
+                min="0" 
+                max="20" 
+                step="0.5" 
+                value={inflationRate}
+                onChange={(e) => setInflationRate(parseFloat(e.target.value))}
+                className="w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-red-500"
+              />
+              <p className="text-[10px] text-slate-500 mt-2 italic">Yearly increase in cost of living.</p>
+            </div>
           </section>
         )}
 
         {/* BTC Section */}
         <section>
-          <label className="block text-sm font-medium text-slate-300 mb-4">Initial BTC</label>
+          <label className="block text-sm font-bold text-slate-300 mb-4">Initial Stack</label>
           <div className="grid grid-cols-3 gap-2 mb-4">
             {INITIAL_BTC_PRESETS.slice(0, 3).map(preset => (
               <button
                 key={preset}
                 onClick={() => setInitialBtc(preset)}
-                className={`py-3 px-4 rounded-xl border-2 transition-all ${
+                className={`py-3 px-4 rounded-xl border-2 transition-all font-bold ${
                   initialBtc === preset 
-                    ? 'border-orange-500 bg-orange-500/10 text-orange-400' 
-                    : 'border-slate-800 bg-slate-800/50 text-slate-400'
+                    ? 'border-orange-500 bg-orange-500/10 text-orange-400 shadow-lg shadow-orange-500/5' 
+                    : 'border-slate-800 bg-slate-800/50 text-slate-500'
                 }`}
               >
                 {preset} ₿
@@ -96,67 +137,64 @@ const SetupScreen: React.FC<SetupScreenProps> = ({ onStart }) => {
             onChange={(e) => setInitialBtc(parseFloat(e.target.value))}
             className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-orange-500"
           />
-          <div className="flex justify-between mt-2 text-xs font-mono text-slate-500">
+          <div className="flex justify-between mt-2 text-[10px] font-mono text-slate-500">
             <span>0.01 ₿</span>
-            <span className="text-orange-400 font-bold">{initialBtc.toFixed(2)} ₿</span>
+            <span className="text-orange-400 font-bold bg-orange-400/10 px-2 py-0.5 rounded">{initialBtc.toFixed(2)} ₿</span>
             <span>1.00 ₿</span>
           </div>
         </section>
 
         {/* Lifestyle Section */}
         <section>
-          <label className="block text-sm font-medium text-slate-300 mb-4">Lifestyle (Monthly Spending)</label>
+          <label className="block text-sm font-bold text-slate-300 mb-4">Current Lifestyle</label>
           <div className="grid grid-cols-3 gap-2">
             {[Lifestyle.FRUGAL, Lifestyle.NORMAL, Lifestyle.CARO].map(style => (
               <button
                 key={style}
                 onClick={() => setLifestyle(style)}
-                className={`py-3 px-2 rounded-xl border-2 text-xs font-medium transition-all ${
+                className={`py-3 px-2 rounded-xl border-2 text-xs font-bold transition-all ${
                   lifestyle === style 
-                    ? 'border-blue-500 bg-blue-500/10 text-blue-400' 
-                    : 'border-slate-800 bg-slate-800/50 text-slate-400'
+                    ? 'border-blue-500 bg-blue-500/10 text-blue-400 shadow-lg shadow-blue-500/5' 
+                    : 'border-slate-800 bg-slate-800/50 text-slate-500'
                 }`}
               >
                 {style}
               </button>
             ))}
           </div>
-          <p className="mt-2 text-[11px] text-slate-500 px-1">
-            {lifestyle === Lifestyle.FRUGAL && "Minimalist: 600 USD/month"}
-            {lifestyle === Lifestyle.NORMAL && "Balanced: 1,200 USD/month"}
-            {lifestyle === Lifestyle.CARO && "Premium: 2,500 USD/month"}
-          </p>
         </section>
 
         {/* Horizon Section */}
         <section>
-          <label className="block text-sm font-medium text-slate-300 mb-4">Time Horizon</label>
+          <label className="block text-sm font-bold text-slate-300 mb-4">Time Horizon</label>
           <div className="flex gap-2">
             {[1, 2, 3].map(h => (
               <button
                 key={h}
                 onClick={() => setHorizon(h)}
-                className={`flex-1 py-3 px-4 rounded-xl border-2 transition-all ${
+                className={`flex-1 py-3 px-4 rounded-xl border-2 transition-all font-bold ${
                   horizon === h 
-                    ? 'border-emerald-500 bg-emerald-500/10 text-emerald-400' 
-                    : 'border-slate-800 bg-slate-800/50 text-slate-400'
+                    ? 'border-emerald-500 bg-emerald-500/10 text-emerald-400 shadow-lg shadow-emerald-500/5' 
+                    : 'border-slate-800 bg-slate-800/50 text-slate-500'
                 }`}
               >
                 {h} Cycle{h > 1 ? 's' : ''}
-                <span className="block text-[10px] opacity-70">({h * 4} years)</span>
+                <span className="block text-[10px] opacity-70 font-normal">({h * 4} yrs)</span>
               </button>
             ))}
           </div>
         </section>
       </div>
 
-      <button
-        onClick={handleStart}
-        className="mt-8 w-full py-4 rounded-2xl font-bold text-lg shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-transform"
-        style={{ backgroundColor: BITCOIN_ORANGE, color: '#fff' }}
-      >
-        Start Simulation
-      </button>
+      <div className="fixed bottom-0 left-0 right-0 p-6 bg-slate-900/90 backdrop-blur-md max-w-md mx-auto">
+        <button
+          onClick={handleStart}
+          className="w-full py-4 rounded-2xl font-black text-lg shadow-2xl hover:brightness-110 active:scale-95 transition-all text-white"
+          style={{ backgroundColor: BITCOIN_ORANGE }}
+        >
+          Start Simulation
+        </button>
+      </div>
     </div>
   );
 };
